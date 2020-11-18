@@ -6,17 +6,15 @@ var md5 = require('md5');
 
 class SessionController {
 
-    async search(req,res){
-        const { texto} = req.body;
-
-        db.query(`select * from User where name like '%${texto}%' or Email like '%${texto}%';`, (error, results) =>{
+    async search(req, res) {
+        const { texto } = req.body;
+        db.query(`select * from User where name like '%${texto}%' or Email like '%${texto}%';`, (error, results) => {
             return res.send(results);
         });
     }
 
-    async index(req,res){
-        
-        db.query('select * from User', (error,results, fields)=>{
+    async index(req, res) {
+        db.query('select * from User', (error, results, fields) => {
             return res.send(results);
         })
     }
@@ -46,16 +44,11 @@ class SessionController {
                     if (results[0]['banned'] == 0) {
                         let token = Date.now();
                         let tokenCrypt = md5(token)
-
                         db.query(`update User set Token = '${tokenCrypt}' where id = ${results[0]['id']}`);
                         db.query(`select p.name,p.id from user_permission up inner join Permission p on up.permission_id = p.id where up.user_id = '${results[0]['id']}'`, (error, results) => {
-
                         });
-
                         res.status(200);
-                        return res.json({ result: results, token: tokenCrypt, permissions: results });
-
-
+                        return res.json({ result: results, token: tokenCrypt });
                         // CASO O USUÁRIO ESTEJA BANIDO
                     } else {
                         res.status(423);

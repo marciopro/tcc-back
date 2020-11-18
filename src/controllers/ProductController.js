@@ -5,18 +5,25 @@ var md5 = require('md5');
 class ProductController {
 
     async getAllAProducts(req, res) {
-       db.query('select * from product', (error,results, fields)=>{
-        return res.send(results);
-    })
+        db.query('select * from product', (error, results, fields) => {
+            return res.send(results);
+        })
     }
 
     async createProducts(req, res) {
         const { nome, endereco, telefone, email, tipo, descricao, user_id } = req.body;
-        const save = await db.query(`insert into product (nome,endereco,telefone,email,tipo,descricao,user_id) values  ('${nome}','${endereco}','${telefone}','${email}','${tipo}','${descricao}',${user_id})`);
-        
-        res.send('Produto criado com sucesso!');
-    }
-
+            db.query(`insert into product (nome, endereco, telefone, email, tipo, descricao, user_id) values ('${nome}','${endereco}','${telefone}','${email}','${tipo}','${descricao}','${user_id}');`, (error, results, fields) => {
+                if (error) {
+                    if (error) {
+                        console.log('Aconteceu um erro na requisição:', req.originalUrl, ' descrição do erro: ->', error.sqlMessage);
+                        res.status(500);
+                        return res.json({ message: 'Ocorreu um erro em nossos servidores.' });
+                    }
+                }
+                res.status(201);
+                return res.json({ message: 'Produto criado com sucesso!' });
+            })
+        }
 }
 
 export default new ProductController();
