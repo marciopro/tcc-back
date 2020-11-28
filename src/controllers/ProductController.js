@@ -4,6 +4,16 @@ var md5 = require('md5');
 
 class ProductController {
 
+    async searchProducts(req, res) {
+        // se quiser alterar pra outro campo trocar o "nome"
+        db.query(`select * from product where tipo like '%${req.query.search}%'`, (error, results, fields) => {   
+            return res.send(results);
+        
+            
+        
+        })
+    }
+   
     async getAllAProducts(req, res) {
         db.query('select * from product', (error, results, fields) => {
             return res.send(results);

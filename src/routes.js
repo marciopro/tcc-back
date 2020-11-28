@@ -10,7 +10,9 @@ routes.post('/user', SessionController.createUser);
 routes.get('/usuarios', SessionController.index);
 routes.post('/usuarios/search', SessionController.search);
 
+// SE QUISER CRIAR OUTRO METODO DE PESQUISA CRIAR ENDPOINT AQUI 
+// E LINKAR NO METODO DA CONTROLLER
+routes.get('/searchProducts', ProductController.searchProducts);
 routes.get('/products', ProductController.getAllAProducts);
 routes.post('/product', ProductController.createProducts);
-
 export default routes;
